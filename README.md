@@ -1,3 +1,4 @@
+
 # Trello Clone
 
 Um clone do Trello, feito em Python/Django.
@@ -36,3 +37,4 @@ Passos:
 
 - Task
   - Lista de texto
+
