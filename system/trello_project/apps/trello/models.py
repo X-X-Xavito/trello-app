@@ -1,23 +1,47 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
 
-class Board(models.Model):
-    board_title = models.CharField(max_length=200)
+
+class MyUser(AbstractBaseUser):
+    name = models.CharField(max_length=40, unique=True)
+    email = models.EmailField()
+    USERNAME_FIELD = 'name'
+    
+
+class BaseModel(models.Model):
+    title = models.CharField(max_length=200)
+
+    class Meta:
+        abstract = True
+
+class Board(BaseModel):
+    users = models.ManyToManyField(MyUser)
 
     def __str__(self):
-        return self.board_title
+        return self.title
 
-class Card(models.Model):
+class Column(BaseModel):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
-    card_title = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.card_title
+        return self.title
 
+class Card(BaseModel):
+    column = models.ForeignKey(Column, on_delete=models.CASCADE)
+    date_created = models.DateField()
 
-class Task(models.Model):
+    def __str__(self):
+        return self.title
+
+class Tag(BaseModel):
+    card = models.ManyToManyField(Card)
+
+    def __str__(self):
+        return self.title
+
+class Task(BaseModel):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
-    task_description = models.CharField(max_length=200)
     task_completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.task_description
+        return self.title
