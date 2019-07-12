@@ -1,0 +1,11 @@
+<h1>Welcome</h1>
+
+<p>Your boards:</p>
+
+<ul>
+    {% for board in boards_list %}
+        <li>{{ board.title }}</li>
+    {% endfor %}
+</ul>
+
+<p><a href="{% url 'trello:create_board' %}">New Board</a></p>
